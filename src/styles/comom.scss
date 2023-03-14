@@ -1,0 +1,27 @@
+@import "./btn.scss";
+// 字体
+$SC:PingFang SC;
+$SS:sans-serif;
+//颜色
+$SuccessColor:#67C23A;
+//单行省略
+@mixin ellipsis() {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+//绝对定位垂直居中
+@mixin lineCenter() {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+@mixin moreEllipsis($num) {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	// word-break: break-all;
+	display: -webkit-box;
+	-webkit-line-clamp: $num;
+	-webkit-box-orient: vertical;
+}

@@ -1,0 +1,163 @@
+.register_background {
+    top: 0;
+    position: absolute;
+    filter: blur(5px);
+    width: 100vw;
+    height: 100vh;
+    background-size: 100% 100%;
+  }
+  .wechar-register {
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 5px;
+    box-shadow: 0 0 5px #d9d9d9;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 500px;
+    border: 1px solid #ececec;
+    transform: translate(-50%, -50%);
+    min-width: 340px;
+    z-index: 666;
+    padding-bottom: 0.5rem;
+    padding: 20px;
+    border-radius: 6px;
+  }
+  .register-content {
+    .content-header {
+      display: inline-block;
+      width: 100%;
+      height: 4rem;
+      line-height: 4rem;
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
+    .content-mainer {
+      width: calc(100% - 4rem);
+      height: calc(100% - 5rem);
+      margin: 0 auto;
+      .iconfont {
+        height: 2.5rem;
+        line-height: 2.5rem;
+        width: 2.5rem;
+        font-size: 1.2rem;
+      }
+      [class$="content"] {
+        white-space: nowrap;
+        margin-bottom: 1rem;
+        button {
+          margin: 8px;
+          border: 0;
+          cursor: pointer;
+        }
+        .btn-login,
+        .btn-cancel {
+          color: #ffffff;
+          width: 5rem;
+          height: 2rem;
+          border-radius: 5px;
+          font-size: 1.25rem;
+          line-height: 2rem;
+        }
+        .btn-login {
+          background-color: #409eff;
+        }
+        .btn-cancel {
+          background-color: #909399;
+        }
+      }
+      input {
+        width: calc(100% - 3rem);
+        height: 2.5rem;
+        border: {
+          top: 1px solid rgb(231, 231, 231);
+          bottom: 1px solid rgb(231, 231, 231);
+          right: 1px solid rgb(231, 231, 231);
+          left: 1px solid transparent;
+        }
+        text-indent: 0.3rem;
+      }
+      .checkCode-content {
+        input {
+          vertical-align: middle;
+          width: calc(100% - 10rem);
+        }
+        .btn-cotent {
+          background-color: white;
+          width: 6rem;
+          border-radius: 0px;
+          height: 2.5rem;
+          cursor: pointer;
+          font-size: 0.8rem;
+          vertical-align: middle;
+          margin-left: 1rem;
+          line-height: 2.5rem;
+        }
+      }
+    }
+  }
+  
+  .content-mainer > section::after {
+    content: "";
+    display: block;
+    clear: both;
+    width: 0px;
+    height: 0px;
+  }
+  .content-mainer > section {
+    text-align: center;
+    width: 100%;
+    margin-top: 20px;
+  }
+  .content-mainer .iconfont {
+    background-color: white;
+    line-height: 29px;
+    display: inline-block;
+    font-size: 1.125rem;
+    min-width: 10%;
+    height: 29px;
+    font-weight: 100;
+    border: 1px solid #ebeef5;
+    vertical-align: middle;
+  }
+  
+  .icon-yonghu {
+    color: #409eff;
+  }
+  
+  .icon-mimasuo {
+    color: #f56c6c;
+  }
+  .comfirm {
+    color: #67c23a;
+  }
+  .icon-querenmima {
+    color: #67c23a;
+  }
+  .icon-icon-mail {
+    color: #e6a23c;
+  }
+  .activer {
+    &:hover {
+      color: #409eff;
+      border: 1px solid #409eff !important;
+    }
+  }
+  .quiet {
+    cursor: not-allowed !important;
+  }
+  
+  .error-tips {
+    color: #f56c6c;
+  }
+  .password-content {
+    position: relative;
+    .password-tips {
+      bottom: -1rem;
+      left: 0.2rem;
+      font-size: 0.5rem;
+      color: #909399;
+      position: absolute;
+    }
+  }
+  

@@ -1,8 +1,9 @@
+<!--
+ * @Author: cly-dev 2663118046@qq.com
+ * @Date: 2023-02-10 20:15:33
+ * @Description: 
+-->
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
   <router-view />
 </template>
 
@@ -13,6 +14,9 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  width: 100vw;
+  height: 100vh;
+
 }
 
 nav {
