@@ -60,6 +60,21 @@
     },
     "rules": {}
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "npx --no-install commitlint --edit $1"
+    }
+  },
+  "lint-staged": {
+    "*.{js,vue}": [
+      "stylelint --config  ./.stylelintrc --fix",
+      "eslint --fix"
+    ],
+    "*.{less,css}": [
+      "stylelint --config  ./.stylelintrc --fix"
+    ]
+  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
