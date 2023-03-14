@@ -5,11 +5,11 @@
  */
 import ElementPlus from "element-plus";
 import pinia from "./pinia";
-import SEODom from "@/components/SEODom/index.vue"
+import SEODom from "@/components/SEODom/index.vue";
 export default {
-    install:(app:any)=>{
-        app.use(ElementPlus);
-        app.use(pinia);
-        app.component("SEODom",SEODom);
-    }
-}
+  install: (app: any) => {
+    app.use(ElementPlus);
+    app.use(pinia);
+    app.component("SEODom", SEODom);
+  },
+};

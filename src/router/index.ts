@@ -1,37 +1,45 @@
-import { message } from './../untils/common';
+import { message } from "./../untils/common";
 /*
  * @Author: cly-dev 2663118046@qq.com
  * @Date: 2023-02-10 20:15:33
- * @Description: 
+ * @Description:
  */
-import { createRouter, createWebHistory, NavigationGuardNext, RouteLocationNormalized, RouteRecordRaw } from "vue-router";
-import useStore from "@/pinia/user"
+import {
+  createRouter,
+  createWebHistory,
+  NavigationGuardNext,
+  RouteLocationNormalized,
+  RouteRecordRaw,
+} from "vue-router";
+import useStore from "@/pinia/user";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "/",
-    component: ()=>import("../views/Page/index.vue"),
-    children:[
+    component: () => import("../views/Page/index.vue"),
+    children: [
       {
-        path:'home',
-        name:'home',
-        component:()=>import("../views/Home/index.vue")
-      },{
-        path:'product/:seoUrl',
-        name:'product',
-        component:()=>import("../views/Product/index.vue")
-      },{
-        path:'category/:seoUrl',
-        name:'category',
-        component:()=>import("../views/Category/index.vue")
+        path: "home",
+        name: "home",
+        component: () => import("../views/Home/index.vue"),
       },
       {
-        path:'/',
-        redirect:{
-          path:'home'
-        }
-      }
-    ]
+        path: "product/:seoUrl",
+        name: "product",
+        component: () => import("../views/Product/index.vue"),
+      },
+      {
+        path: "category/:seoUrl",
+        name: "category",
+        component: () => import("../views/Category/index.vue"),
+      },
+      {
+        path: "/",
+        redirect: {
+          path: "home",
+        },
+      },
+    ],
   },
   {
     path: "/about",
@@ -41,46 +49,55 @@ const routes: Array<RouteRecordRaw> = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
-  },{
+  },
+  {
     path: "/login",
     name: "login",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () =>import(/* webpackChunkName: "about" */ "../views/Login/index.vue"),
-    meta:{
-        auth:'login'
-      }
-  },{
-    path:'/register',
-    name:'register',
-    component:()=>import("../views/Register/index.vue"),
-    meta:{
-      auth:false
-    }
-  }
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Login/index.vue"),
+    meta: {
+      auth: "login",
+    },
+  },
+  {
+    path: "/register",
+    name: "register",
+    component: () => import("../views/Register/index.vue"),
+    meta: {
+      auth: false,
+    },
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
-router.beforeEach((to:RouteLocationNormalized,form:RouteLocationNormalized,next:NavigationGuardNext)=>{
+router.beforeEach(
+  (
+    to: RouteLocationNormalized,
+    form: RouteLocationNormalized,
+    next: NavigationGuardNext
+  ) => {
     console.log(to);
     console.log(form);
-   console.log("路由更新前")
-   const userData=useStore();
-   if(to.meta.auth==='login' && userData.userData){
-        message("请先退出登录",'warning');
-        next(form.fullPath)
-   }
+    console.log("路由更新前");
+    const userData = useStore();
+    if (to.meta.auth === "login" && userData.userData) {
+      message("请先退出登录", "warning");
+      next(form.fullPath);
+    }
     next();
-})
-router.afterEach((to:any,from:any)=>{
+  }
+);
+router.afterEach((to: any, from: any) => {
   console.log(to);
   console.log(from);
-  console.log("路由更新后")
-  console.log('-=-----------------')
-})
+  console.log("路由更新后");
+  console.log("-=-----------------");
+});
 
 export default router;
