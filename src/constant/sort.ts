@@ -56,6 +56,6 @@ export const serviceMap=[
         value:'4'
     },{
         label:'7天无理由',
-        value:'5'
+        value:'5',
     }
 ]
