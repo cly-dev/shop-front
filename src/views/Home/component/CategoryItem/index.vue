@@ -8,7 +8,7 @@
         <div class="itemInfo">
             <img src="@/assets/img/icon/1.jpg" alt="icon" class="infoIcon">
             <span class="infoName">
-                123123123123123131231231231231312312312312313123123123123131231231231231
+                1231231231231231231231231231312312312312313123123123123131231231231231
             </span>
             <el-icon class="rightIcon"><ArrowRight  /></el-icon>
 
