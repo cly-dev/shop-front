@@ -2949,6 +2949,14 @@
     "strip-bom" "4.0.0"
     "strip-json-comments" "3.1.1"
 
+"commitlint@^17.4.4":
+  "integrity" "sha512-trjD7/aJ3FyCMNRhP27QorPjvlE9m0AIlLKcusS6r8aDaDJQ8/MQMmANMv3LvjVx1SKy1MTSF0/oUw3T3If/EA=="
+  "resolved" "https://registry.npmmirror.com/commitlint/-/commitlint-17.4.4.tgz"
+  "version" "17.4.4"
+  dependencies:
+    "@commitlint/cli" "^17.4.4"
+    "@commitlint/types" "^17.4.4"
+
 "commondir@^1.0.1":
   "integrity" "sha512-W9pAhw0ja1Edb5GVdIF1mjZw/ASI0AlShXM83UUGe2DVr5TdAPEA1OA8m/g8zWp9x6On7gqufY+FatDbC3MDQg=="
   "resolved" "https://registry.npmmirror.com/commondir/-/commondir-1.0.1.tgz"
