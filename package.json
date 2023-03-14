@@ -5,9 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "prepare": "husky install",
-    "commit": "git-cz"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@vuelidate/core": "^2.0.0",
@@ -34,9 +32,6 @@
     "@vue/cli-plugin-typescript": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
     "@vue/eslint-config-typescript": "^9.1.0",
-    "commitizen": "^4.3.0",
-    "commitlint": "^17.4.4",
-    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
@@ -65,30 +60,10 @@
     },
     "rules": {}
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "npx --no-install commitlint --edit $1"
-    }
-  },
-  "lint-staged": {
-    "*.{js,vue}": [
-      "stylelint --config  ./.stylelintrc --fix",
-      "eslint --fix"
-    ],
-    "*.{less,css}": [
-      "stylelint --config  ./.stylelintrc --fix"
-    ]
-  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not dead",
     "not ie 11"
-  ],
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  }
+  ]
 }
