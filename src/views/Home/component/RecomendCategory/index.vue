@@ -13,14 +13,7 @@
       </button>
     </div>
     <div class="subCategotyList">
-      <CategoryItem></CategoryItem>
-      <CategoryItem></CategoryItem>
-      <CategoryItem></CategoryItem>
-      <CategoryItem></CategoryItem>
-      <CategoryItem></CategoryItem>
-      <CategoryItem></CategoryItem>
-      <CategoryItem></CategoryItem>
-      <CategoryItem></CategoryItem>
+      <CategoryItem v-for="item in list" :key="item.id" :info="item"></CategoryItem>
     </div>
   </div>
 </template>
@@ -28,6 +21,14 @@
 <script setup lang="ts">
 import { ArrowRight } from "@element-plus/icons-vue";
 import CategoryItem from "../CategoryItem/index.vue";
+import {defineProps,withDefaults} from "vue";
+
+type Props={
+  list:Array<CategoryType.CategoryItem>
+};
+const props=withDefaults(defineProps<Props>(),{})
+const {list}=props;
+
 </script>
 
 <style scoped lang="scss">
@@ -75,7 +76,6 @@ import CategoryItem from "../CategoryItem/index.vue";
     flex: 1;
     margin-left: 20px;
     border-radius: 10px;
-    display: flex;
     flex-wrap: wrap;
   }
 }

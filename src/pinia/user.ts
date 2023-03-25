@@ -7,7 +7,10 @@ import { SETUSERDATA, RESETUSERDATA } from "./actionType";
 import { defineStore } from "pinia";
 
 export default defineStore("user", {
-  state() {
+  state():{
+    token:string,
+    userData:UserType.UserField | null
+  } {
     return {
       token: "",
       userData: null,

@@ -4,19 +4,28 @@
  * @Description: 
 -->
 <template>
-  <div class="categoryItem">
-    <div class="itemInfo">
-      <img src="@/assets/img/icon/1.jpg" alt="icon" class="infoIcon" />
-      <span class="infoName">
-        123123123123121231231231231312312312312313123123123123131231231231231
-      </span>
-      <el-icon class="rightIcon"><ArrowRight /></el-icon>
-    </div>
+  <div class="categoryItem" :style="props.styles">
+    <RouterLink :to="`/category/${info.seoUrl}`">
+      <div class="itemInfo">
+        <img :src="info?.iconUrl ?? '@/assets/img/icon/1.jpg'" alt="icon" class="infoIcon" />
+        <span class="infoName">
+            {{info.title}}
+        </span>
+        <el-icon class="rightIcon"><ArrowRight /></el-icon>
+      </div>
+  </RouterLink>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ArrowRight } from "@element-plus/icons-vue";
+import {CSSProperties, defineProps,withDefaults} from "vue";
+type Props={
+  info:CategoryType.CategoryItem,
+  styles?:CSSProperties
+}
+const props=withDefaults(defineProps<Props>(),{});
+const {info}=props;
 </script>
 
 <style lang="scss" scoped>
@@ -26,7 +35,7 @@ import { ArrowRight } from "@element-plus/icons-vue";
   display: inline-block;
   border-radius: 10px;
   box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   background-color: #e4e4e4;
   cursor: pointer;
   &:nth-child(even) {

@@ -4,6 +4,13 @@ $SC:PingFang SC;
 $SS:sans-serif;
 //颜色
 $SuccessColor:#67C23A;
+//主题
+$ThemeColor:#F40;
+//像素单位--为后面响应式铺垫
+@function px2rem($num){
+	@return $num * 1px;
+}
+
 //单行省略
 @mixin ellipsis() {
 	overflow: hidden;

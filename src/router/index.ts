@@ -32,6 +32,18 @@ const routes: Array<RouteRecordRaw> = [
         path: "category/:seoUrl",
         name: "category",
         component: () => import("../views/Category/index.vue"),
+      },{
+        path:'collection/:seoUrl',
+        name:'collection',
+        component:()=>import("../views/Collection/index.vue")
+      },{
+        path:'search',
+        name:'search',
+        component:()=>import("../views/Search/index.vue")
+      },{
+        path:'cart',
+        name:'cart',
+        component:()=>import("../views/Cart/index.vue")
       },
       {
         path: "/",
@@ -44,18 +56,12 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/about",
     name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
   },
   {
     path: "/login",
     name: "login",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Login/index.vue"),
     meta: {

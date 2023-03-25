@@ -17,9 +17,11 @@
     "pinia-plugin-persist": "^1.0.0",
     "swiper": "^9.1.0",
     "validattoy": "^1.0.3",
+    "video.js": "^8.0.4",
     "vue": "^3.2.13",
     "vue-class-component": "^8.0.0-0",
-    "vue-router": "^4.0.3"
+    "vue-router": "^4.0.3",
+    "vue-video-player": "^5.0.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.4",
