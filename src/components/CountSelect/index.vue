@@ -8,14 +8,19 @@
 		<div :class="`minusIcon ${count === 1 && 'btnDisabled'}`" @click="() => handleChange('pre')">
 			<el-icon><Minus /></el-icon>
 		</div>
-		<el-select v-model="count" style="height: 100%" class="quantitySelect" :disabled="!props.qty">
+		<el-select :disabled="props.qty === 0 || props.status === '1'" v-model="count" style="height: 100%" class="quantitySelect">
 			<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
 		</el-select>
 		<div :class="`plusIcon ${count === qty && 'btnDisabled'}`" @click="() => handleChange('next')">
 			<el-icon><Plus /></el-icon>
 		</div>
 		<!-- TODO: 库存状态标识 -->
-		<div class="totalStatus" v-show="showTips">有货</div>
+		<template v-if="props.status === '0'">
+			<div class="totalStatus" v-if="props.qty > 0 && props.qty > 5">有货</div>
+			<div class="totalStatus" v-else-if="props.qty > 0 && props.qty <= 5" style="color: #909399">有货</div>
+			<div class="totalStatus" style="color: #f56c6c" v-else>售完</div>
+		</template>
+		<div class="totalStatus" v-else>已下架</div>
 	</div>
 </template>
 
@@ -28,8 +33,8 @@ type Props = {
 	qty: number
 	//数量
 	modelValue: number
-	//显示数量
-	showTips?: boolean
+	//商品状态
+	status: '0' | '1'
 }
 const options = computed(() => {
 	let i = 0
@@ -44,9 +49,7 @@ const options = computed(() => {
 	}
 	return options
 })
-const props = withDefaults(defineProps<Props>(), {
-	showTips: true,
-})
+const props = withDefaults(defineProps<Props>(), {})
 const emit = defineEmits(['update:modelValue'])
 const count = ref<number>(1)
 watch(

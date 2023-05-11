@@ -5,8 +5,8 @@
 -->
 <template>
 	<div class="categoryItem" :style="{backgroundImage: `url(${info.iconUrl})`, backgroundSize: '100% 100%'}">
-		<h2>{{ info.title }}</h2>
-		<button class="btnLink" onclick="toLink">跳转</button>
+		<h2>{{ info.categoryTitle }}</h2>
+		<button class="btnLink" @click="toLink">跳转</button>
 	</div>
 </template>
 
@@ -15,7 +15,7 @@ import {withDefaults, defineProps} from 'vue'
 import {useRouter} from 'vue-router'
 
 type Props = {
-	info: Required<Pick<CategoryType.CategoryItem, 'seoUrl' | 'title' | 'iconUrl'>>
+	info: Required<Pick<CategoryType.CategoryItem, 'seoUrl' | 'categoryTitle' | 'iconUrl'>>
 }
 const props = withDefaults(defineProps<Props>(), {})
 const router = useRouter()

@@ -4,7 +4,7 @@
  * @Description: 商品列表
 -->
 <template>
-	<div class="productListLayout">
+	<div class="productListLayout" v-if="props.total">
 		<el-row :gutter="24">
 			<el-col :span="8">
 				<el-affix :offset="120">
@@ -16,7 +16,7 @@
 									<el-input-number
 										:controls="false"
 										:precision="2"
-										v-model="filterForm.minPrice"
+										v-model="priceValue.minPrice"
 										:min="0"
 										:max="999999"
 										placeholder="Min"
@@ -26,53 +26,59 @@
 									<el-input-number
 										:controls="false"
 										:precision="2"
-										v-model="filterForm.maxPrice"
+										v-model="priceValue.maxPrice"
 										:min="0"
 										:max="999999"
 										placeholder="Max"
 										class="filter-input"
 									/>
+									<span class="btn ml-5" @click="handleSearch">Go</span>
 								</div>
 							</el-form-item>
-							<el-form-item label="类别" v-if="props.showCategory">
-								<el-checkbox-group v-model="filterForm.category">
-									<el-checkbox v-for="category in categories" :key="category.id" :label="category.id">
-										{{ category.name }}
-									</el-checkbox>
-								</el-checkbox-group>
-							</el-form-item>
 							<el-form-item label="颜色">
-								<el-checkbox-group v-model="filterForm.color">
-									<el-checkbox v-for="color in colors" :key="color" :label="color">
+								<el-checkbox-group v-model="filterForm.color" @change="(v:any) => handleChange('color', v)">
+									<el-checkbox
+										v-for="item in preType.type === 'color' ? preType.list : filter?.colorList"
+										:key="item"
+										:label="item"
+									>
 										<div>
-											{{ color }}
+											{{ item }}
 										</div>
 									</el-checkbox>
 								</el-checkbox-group>
 							</el-form-item>
 							<el-form-item label="品牌">
-								<el-checkbox-group v-model="filterForm.color">
-									<el-checkbox v-for="color in brands" :key="color" :label="color">
+								<el-checkbox-group v-model="filterForm.brand" @change="(v:any) => handleChange('brand', v)">
+									<el-checkbox
+										v-for="item in preType.type === 'brand' ? preType.list : filter?.brandList"
+										:key="item"
+										:label="item"
+									>
 										<div>
-											{{ color }}
+											{{ item }}
 										</div>
 									</el-checkbox>
 								</el-checkbox-group>
 							</el-form-item>
-							<el-form-item label="产地">
-								<el-checkbox-group v-model="filterForm.color">
-									<el-checkbox v-for="color in local" :key="color" :label="color">
+							<!-- <el-form-item label="产地">
+								<el-checkbox-group v-model="filterForm.address">
+									<el-checkbox v-for="item in filter?.addressList" :key="item" :label="item.join('')">
 										<div>
-											{{ color }}
+											{{ item.join('') }}
 										</div>
 									</el-checkbox>
 								</el-checkbox-group>
-							</el-form-item>
+							</el-form-item> -->
 							<el-form-item label="涂抹位置">
-								<el-checkbox-group v-model="filterForm.position">
-									<el-checkbox v-for="color in position" :key="color" :label="color">
+								<el-checkbox-group v-model="filterForm.location" @change="(v:any) => handleChange('location', v)">
+									<el-checkbox
+										v-for="item in preType.type === 'location' ? preType.list : filter?.locationList"
+										:key="item"
+										:label="item"
+									>
 										<div>
-											{{ color }}
+											{{ item }}
 										</div>
 									</el-checkbox>
 								</el-checkbox-group>
@@ -89,13 +95,13 @@
 							<div
 								v-for="item in sortMap"
 								:key="item.name"
-								:class="`sortItem ${sortValue === item.key && 'activer'}`"
+								:class="`sortItem ${filterForm.sort === item.key && 'activer'}`"
 								@click="() => handleSortChange(item.key)"
 							>
 								{{ item.name }}
 							</div>
 
-							<el-dropdown>
+							<!-- <el-dropdown>
 								<div :class="`el-dropdown-link ${orderSort && 'activer'}`">
 									{{ orderName ? orderName : '销量' }}
 									<el-icon class="el-icon--right"><ArrowDown /></el-icon>
@@ -111,10 +117,10 @@
 										</el-dropdown-item>
 									</el-dropdown-menu>
 								</template>
-							</el-dropdown>
+							</el-dropdown> -->
 							<el-dropdown>
-								<div :class="`el-dropdown-link ${priceSort && 'activer'}`">
-									{{ priceSort ? priceName : '价格' }}
+								<div :class="`el-dropdown-link ${(filterForm.sort == 'max' || filterForm.sort == 'min') && 'activer'}`">
+									{{ filterForm.sort == 'max' || filterForm.sort == 'min' ? priceName : '价格' }}
 									<el-icon class="el-icon--right"><ArrowDown /></el-icon>
 								</div>
 								<template #dropdown>
@@ -132,22 +138,44 @@
 						</div>
 						<div class="page">
 							<div class="pageContent">
-								<el-icon class="icon disabled"><ArrowLeft /></el-icon>
-								<span class="pageBox">1 / 100</span>
-								<el-icon class="icon"><ArrowRight /></el-icon>
+								<el-icon
+									:class="`icon ${filter.page === 1 || props.total < filterForm.size ? 'disabled' : ''}`"
+									@click="
+										() => {
+											filterForm.page += 1
+										}
+									"
+								>
+									<ArrowLeft />
+								</el-icon>
+								<span class="pageBox">1 / {{ Math.ceil(props.total / filterForm.size) }}</span>
+								<el-icon
+									:class="`icon ${
+										filter.page === Math.ceil(props.total / filterForm.size) || props.total < filterForm.size
+											? 'disabled'
+											: ''
+									}`"
+									@click="
+										() => {
+											filterForm.page -= 1
+										}
+									"
+								>
+									<ArrowRight />
+								</el-icon>
 							</div>
-							<div class="total">共120条</div>
+							<div class="props.total">共{{ props.total }}条</div>
 						</div>
 					</div>
 					<div class="seriveFilter">
-						<el-checkbox-group class="filterContent" v-model="serviceFilter">
+						<el-checkbox-group class="filterContent" v-model="filterForm.service">
 							<el-checkbox v-for="value in serviceMap" :key="value.value" :label="value.value">{{ value.label }}</el-checkbox>
 						</el-checkbox-group>
 					</div>
 					<!-- 商品卡片 -->
-					<div class="productList">
+					<div class="productList" v-loading="props.loading">
 						<el-row :gutter="20">
-							<el-col :span="6" v-for="item in items" :key="item.id">
+							<el-col :span="6" v-for="item in props.itemList" :key="item._id">
 								<ProductItemCard :item-data="item"></ProductItemCard>
 							</el-col>
 						</el-row>
@@ -155,11 +183,10 @@
 					<!-- 分页 -->
 					<div class="pageContainer">
 						<el-pagination
-							v-model:current-page="filterValue.page"
-							v-model:page-size="filterValue.pageSize"
-							layout="total,prev, pager, next, jumper"
-							:total="120"
-							@size-change="handleSizeChange"
+							v-model:current-page="filterForm.page"
+							v-model:page-size="filterForm.size"
+							layout="props.total,prev, pager, next, jumper"
+							:total="props.total"
 							@current-change="handleCurrentChange"
 						/>
 					</div>
@@ -167,146 +194,145 @@
 			</el-col>
 		</el-row>
 	</div>
+	<div class="emptyContainer" v-else>
+		<el-empty description="暂无结果" />
+	</div>
 </template>
 
 <script setup lang="ts">
 import {ArrowDown, ArrowLeft, ArrowRight} from '@element-plus/icons-vue'
-import {ref, withDefaults, defineProps, computed, reactive} from 'vue'
+import {ref, withDefaults, defineProps, computed, reactive, watch, defineEmits, onMounted} from 'vue'
 
 import Img from '@/assets/img/icon/1.jpg'
 
 import ProductItemCard from './component/ProductItemCard/index.vue'
 
-import {sortMap, orderSortMap, priceSortMap, serviceMap} from '@/constant/sort'
+import {sortMap, priceSortMap, serviceMap} from '@/constant/sort'
 
 type Props = {
-	showCategory?: boolean
+	filter: any
+	total: number
+	itemList: any[]
+	loading: boolean
 }
-const props = withDefaults(defineProps<Props>(), {
-	showCategory: false,
-})
-
-const filterValue = reactive<{page: number; pageSize: number; sortValue?: string}>({
-	page: 1,
-	pageSize: 20,
-	sortValue: '',
-})
-
-const total = ref<number>(120)
-const filterForm = ref<any>({})
-//服务筛选
-const serviceFilter = ref<any>([])
-//筛选方式
-const sortValue = ref<any>('')
-//价格筛选
-const priceSort = ref<string>('')
+const emit = defineEmits(['search'])
+const props = withDefaults(defineProps<Props>(), {})
 //销量筛选
 const orderSort = ref<string>('')
-//mock商品数据
-const items = [
-	{
-		id: '1',
-		title: '商品标题11231231231231231231231231231',
-		imageUrl: Img,
-		discountPrice: 23.0,
-		originPrice: 25.0,
-		location: '浙江 杭州',
-		num: 200,
-		seoUrl: '12',
-	},
-	{
-		id: '2',
-		title: '商品标题',
-		imageUrl: Img,
-		discountPrice: 23.0,
-		originPrice: 25.0,
-		location: '浙江 杭州',
-		num: 200,
-		seoUrl: '2',
-	},
-	{
-		id: '3',
-		title: '商品标题',
-		imageUrl: Img,
-		discountPrice: 23.0,
-		originPrice: 25.0,
-		seoUrl: '3',
-		location: '浙江 杭州',
-		num: 200,
-	},
-	{
-		id: '4',
-		title: '商品标题',
-		imageUrl: Img,
-		discountPrice: 23.0,
-		originPrice: 25.0,
-		location: '浙江 杭州',
-		num: 200,
-		seoUrl: '4',
-	},
-	{
-		id: '4',
-		title: '商品标题',
-		imageUrl: Img,
-		discountPrice: 23.0,
-		originPrice: 25.0,
-		location: '浙江 杭州',
-		num: 200,
-		seoUrl: '4',
-	},
-	{
-		id: '5',
-		title: '商品标题',
-		imageUrl: Img,
-		discountPrice: 23.0,
-		originPrice: 25.0,
-		location: '浙江 杭州',
-		num: 200,
-		seoUrl: '/',
-	},
-]
-const handleSizeChange = (val: number) => {
-	console.log(`${val} items per page`)
+const priceValue = reactive({
+	minPrice: '',
+	maxPrice: '',
+})
+const preType = reactive({
+	type: '',
+	list: [],
+})
+const filterForm = reactive({
+	color: [],
+	brand: [],
+	address: [],
+	location: [],
+	page: 1,
+	size: 20,
+	sort: '',
+	service: [],
+})
+const handleSearch = () => {
+	const params = {}
+	Object.keys(filterForm).forEach((item: any) => {
+		const fieldValue: any = filterForm[item as keyof typeof filterForm]
+		if (fieldValue) {
+			Object.assign(params, {[item]: fieldValue})
+			Object.assign(params)
+			if (['color', 'brand', 'address', 'location', 'address'].includes(item) && fieldValue.length > 0) {
+				Object.assign(params, {[item]: (fieldValue as any[]).join(',')})
+			}
+			if (item === 'service') {
+				fieldValue.forEach((item: any) => {
+					Object.assign(item, {item: true})
+				})
+			}
+		}
+	})
+	if (priceValue.maxPrice) {
+		Object.assign(params, {maxPrice: priceValue.maxPrice})
+	}
+	if (priceValue.minPrice) {
+		Object.assign(params, {minPrice: priceValue.minPrice})
+	}
+	emit('search', params)
 }
+const handleChange = (type: any, v: any) => {
+	console.log(type)
+	console.log('-=----------------')
+	if (v.length !== 0 && (!preType.type || preType.type === type)) {
+		preType.type = type
+		if (type === 'color' && preType.list.length < props.filter.colorList.length) {
+			preType.list = props.filter.colorList
+		} else if (type === 'brand' && preType.list.length < props.filter.brandList.length) {
+			preType.list = props.filter.brandList
+		} else if (type === 'location' && preType.list.length < props.filter.locationList.length) {
+			preType.list = props.filter.locationList
+		}
+	} else {
+		preType.type = ''
+		preType.list = []
+	}
+}
+watch(
+	filterForm,
+	(newV, oldV) => {
+		handleSearch()
+	},
+	// {
+	// 	deep: true,
+	// },
+)
+//mock商品数据
 const handleCurrentChange = (val: number) => {
 	console.log(`current page: ${val}`)
 }
 //点击销量和价格排序
 const handleMenuClick = (type: 'order' | 'price', v: any) => {
-	sortValue.value = type
+	filterForm.sort = type
+	filterForm.sort = type
 	if (type === 'order') {
-		priceSort.value = ''
+		filterForm.sort = ''
 		orderSort.value = v
 	} else {
-		priceSort.value = v
+		filterForm.sort = v
 		orderSort.value = ''
 	}
 }
+
 //更换排序方式
 const handleSortChange = (v: any) => {
-	priceSort.value = ''
-	sortValue.value = v
+	filterForm.sort = v
+	// filterForm.sort = v
 	orderSort.value = ''
 }
 const priceName = computed(() => {
-	const field: any = priceSortMap.find((item: any) => item.key === priceSort.value)
+	const field: any = priceSortMap.find((item: any) => item.key === filterForm.sort)
 	return field?.name
 })
-const orderName = computed(() => {
-	const field = orderSortMap.find((item: any) => item.key === orderSort.value)
-	return field?.name
-})
-const categories = [
-	{id: 1, name: 1},
-	{id: 2, name: 2},
-]
-const colors = ['黑', '红']
-const brands = ['雅诗兰黛', '兰蔻']
-const local = ['浙江', '广东', '福建']
-const position = ['手部', '脸部', '嘴部']
 </script>
 
 <style lang="scss" scoped>
+.btn {
+	border: 1px solid red;
+	display: block;
+	width: 40px;
+	text-align: center;
+	border-radius: 10px;
+	background-color: #ff5500;
+	color: white;
+	cursor: pointer;
+}
+.emptyContainer {
+	width: 100%;
+	min-width: 1040px;
+	height: calc(100vh - 200px);
+}
 .productListLayout {
 	::v-deep {
 		.el-checkbox-group {
@@ -425,7 +451,7 @@ const position = ['手部', '脸部', '嘴部']
 	.header {
 		padding: 10px 0;
 		display: flex;
-		height: 20px;
+		height: 40px;
 		justify-content: space-between;
 		align-items: center;
 		border-bottom: 1px solid #e8e8e8;
@@ -466,7 +492,7 @@ const position = ['手部', '脸部', '嘴部']
 		height: 40px;
 		font-size: 13px;
 		color: #6d6d6d;
-		.total {
+		.props.total {
 			height: 100%;
 			padding: 0 20px;
 			line-height: 40px;
@@ -487,6 +513,7 @@ const position = ['手部', '脸部', '嘴部']
 				top: 1px;
 			}
 			.disabled {
+				pointer-events: none;
 				color: #c5c5c5;
 			}
 		}

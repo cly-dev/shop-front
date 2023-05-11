@@ -16,16 +16,18 @@
 				@swiper="onSwiper"
 				@slideChange="onSlideChange"
 			>
-				<swiper-slide v-for="item in ImgList" :key="item">
+				<swiper-slide v-for="item in config.banner" :key="item">
 					<div class="sildeItem">
-						<img :src="item" class="bannerImg" />
+						<RouterLink :to="`/product/${item?.itemData?.seoUrl}`">
+							<img :src="item?.imageUrl" class="bannerImg" />
+						</RouterLink>
 					</div>
 				</swiper-slide>
 			</swiper>
 		</div>
 		<!-- 热门类目 -->
 		<div class="hotCategory">
-			<HotCategoryItem v-for="item in categoryList" :key="item.seoUrl" :info="item"></HotCategoryItem>
+			<HotCategoryItem v-for="item in config?.hotCategory" :key="item?._id" :info="item?.itemData"></HotCategoryItem>
 		</div>
 		<!-- 类目推荐 -->
 		<div class="recommendCategory">
@@ -37,23 +39,8 @@
 			<h2>为你推荐</h2>
 			<div class="productList">
 				<el-row :gutter="24">
-					<el-col :span="8">
-						<ProductItemCard></ProductItemCard>
-					</el-col>
-					<el-col :span="8">
-						<ProductItemCard></ProductItemCard>
-					</el-col>
-					<el-col :span="8">
-						<ProductItemCard></ProductItemCard>
-					</el-col>
-					<el-col :span="8">
-						<ProductItemCard></ProductItemCard>
-					</el-col>
-					<el-col :span="8">
-						<ProductItemCard></ProductItemCard>
-					</el-col>
-					<el-col :span="8">
-						<ProductItemCard></ProductItemCard>
+					<el-col :span="8" v-for="item in config?.product" :key="item._id">
+						<ProductItemCard :item-data="item?.itemData"></ProductItemCard>
 					</el-col>
 				</el-row>
 			</div>
@@ -62,8 +49,9 @@
 </template>
 
 <script setup lang="ts">
-import {reactive, ref} from 'vue'
+import {reactive, ref, onMounted} from 'vue'
 import {Navigation, Pagination} from 'swiper'
+import {getConfig} from '@/api/public'
 import {Swiper, SwiperSlide} from 'swiper/vue'
 import 'swiper/css'
 import 'swiper/css/pagination'
@@ -76,7 +64,7 @@ import Img from '@/assets/img/icon/1.jpg'
 import ImgList from '@/assets/img/banner'
 import Img1 from '@/assets/img/1/2.jpg'
 import Img2 from '@/assets/img/1/3.jpg'
-// Import Swiper styles
+const config = ref<any>({})
 
 const categoryList = ref<any[]>([
 	{
@@ -136,6 +124,13 @@ const list = reactive<Array<CategoryType.CategoryItem>>([
 		seoUrl: '2',
 	},
 ])
+
+onMounted(() => {
+	getConfig().then(doc => {
+		console.log(doc)
+		config.value = doc
+	})
+})
 </script>
 
 <style lang="scss" scoped>

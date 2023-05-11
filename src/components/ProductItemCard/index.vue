@@ -1,28 +1,39 @@
 <template>
 	<div class="productItemCard">
-		<img class="infoImg" src="@/assets/logo.jpg" />
-		<div class="infoContent">
-			<div class="infoTitle">
-				<h3>60包纸巾抽纸整箱卫生纸家用实惠装餐巾纸婴儿面巾纸擦手纸抽批发</h3>
-				<div class="infoTips">
-					<span>包邮</span>
-					<span>送运费险</span>
-					<span>过敏包退</span>
+		<RouterLink :to="`/product/${itemData.seoUrl}`">
+			<img class="infoImg" :src="itemData.imageUrl" />
+			<div class="infoContent">
+				<div class="infoTitle">
+					<h3>{{ itemData.productTitle }}</h3>
+					<div class="infoTips">
+						<span v-show="itemData.freightFree">包邮</span>
+						<span v-show="itemData.freightInspection">送运费险</span>
+						<span v-show="itemData.allergyTurn">过敏包退</span>
+					</div>
+				</div>
+				<div class="discountPrice">
+					<em>¥</em>
+					{{ itemData.discountPrice }}
 				</div>
 			</div>
-			<div class="discountPrice">
-				<em>¥</em>
-				18.00
-			</div>
-		</div>
+		</RouterLink>
 	</div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import {defineProps, withDefaults} from 'vue'
+type Props = {
+	itemData: Pick<
+		ProductType.ItemType,
+		'id' | 'productTitle' | 'imageUrl' | 'discountPrice' | 'allergyTurn' | 'freightInspection' | 'freightFree' | 'seoUrl'
+	>
+}
+const {itemData} = withDefaults(defineProps<Props>(), {})
+</script>
 
 <style lang="scss" scoped>
 .productItemCard {
-	height: 150px;
+	height: 190px;
 	border-radius: 10px;
 	color: #333;
 	background-color: white;
@@ -39,8 +50,14 @@
 			opacity: 0.7;
 		}
 	}
-	display: flex;
-	align-items: center;
+
+	a {
+		display: block;
+		height: 100%;
+		width: 100%;
+		display: flex;
+		align-items: center;
+	}
 	.infoImg {
 		width: 150px;
 		height: 150px;

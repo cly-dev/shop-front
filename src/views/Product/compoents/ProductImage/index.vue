@@ -5,26 +5,26 @@
 -->
 <template>
 	<div class="productImg">
-		<div class="videoContent" v-if="isPlay">
-			<video src="../../../../assets/video/demo.mp4" controls></video>
+		<div class="videoContent" v-if="vedioSrc && isPlay">
+			<video :src="vedioSrc" controls></video>
 			<el-icon class="closeIcon" @click="() => (isPlay = false)"><Close /></el-icon>
 		</div>
 		<div class="imageContainer" @mouseleave="handleMouseLeave" v-else>
-			<img :src="imgList[activeIndex]" class="imgBox" @mouseover="handleMouseOver" />
+			<img :src="mediaList[activeIndex]" class="imgBox" @mouseover="handleMouseOver" />
 			<div class="mask" ref="maskRef" @mousemove="handleMouseMover"></div>
-			<el-icon class="videoIcon" @click="handleClickVideo">
+			<el-icon class="videoIcon" @click="handleClickVideo" v-if="vedioSrc">
 				<VideoPlay />
 			</el-icon>
 		</div>
 
 		<ul class="imgList">
-			<li v-for="(v, k) in imgList" :key="v" @click="() => handleChange(k)" :class="activeIndex === k && 'activer'">
+			<li v-for="(v, k) in mediaList" :key="v" @click="() => handleChange(k)" :class="activeIndex === k && 'activer'">
 				<img :src="v" />
 			</li>
 		</ul>
 		<div class="scaleContent" ref="scaleContentRef" v-show="!isPlay">
 			<div>
-				<img ref="scaleRef" :src="imgList[activeIndex]" />
+				<img ref="scaleRef" :src="mediaList[activeIndex]" />
 			</div>
 		</div>
 	</div>
@@ -33,17 +33,13 @@
 
 <script setup lang="ts">
 import {VideoPlay, Close} from '@element-plus/icons-vue'
-import {ref} from 'vue'
+import {ref, withDefaults, defineProps} from 'vue'
 import ProductVideo from '../ProductVideo/index.vue'
-
-import img1 from '@/assets/img/1/1.jpg'
-import img2 from '@/assets/img/1/2.jpg'
-import img3 from '@/assets/img/1/3.jpg'
-import img4 from '@/assets/img/1/4.jpg'
-import img5 from '@/assets/img/1/5.jpg'
-import img6 from '@/assets/img/1/5.jpg'
-
-const imgList = [img1, img2, img3, img4, img5, img6]
+type Props = {
+	mediaList: string[]
+	vedioSrc?: string
+}
+const props = withDefaults(defineProps<Props>(), {})
 const isPlay = ref<boolean>(false)
 const activeIndex = ref<number>(0)
 const maskRef = ref<any>(null)
@@ -137,7 +133,7 @@ const handleMouseLeave = () => {
 		top: 0;
 		left: 0;
 		background-color: rgba($color: #fff, $alpha: 0.6);
-		z-index: 999;
+		z-index: 9;
 		display: none;
 	}
 
@@ -192,7 +188,7 @@ const handleMouseLeave = () => {
 }
 .videoIcon {
 	position: absolute;
-	z-index: 999;
+	z-index: 10;
 	bottom: 20px;
 	left: 50%;
 	transform: translate(-50%, 0);
