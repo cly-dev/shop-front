@@ -1,4 +1,4 @@
 //设置用户的信息
-export const SETUSERDATA='SETUSERDATA'
+export const SETUSERDATA = "SETUSERDATA";
 //重置用户的信息
-export const RESETUSERDATA="RESETUSERDATA"
+export const RESETUSERDATA = "RESETUSERDATA";

@@ -4,8 +4,10 @@
  * @Description: 类目
 -->
 <template>
-        <BreadCrumbs :nav-list="[{title:'类目详情',href:'/',disabled:true}]"></BreadCrumbs>
-        <ProductListLayout></ProductListLayout>
+  <BreadCrumbs
+    :nav-list="[{ title: '类目详情', href: '/', disabled: true }]"
+  ></BreadCrumbs>
+  <ProductListLayout></ProductListLayout>
 </template>
 
 <script setup lang="ts">
@@ -13,6 +15,4 @@ import BreadCrumbs from "@/components/BreadCrumbs/index.vue";
 import ProductListLayout from "@/components/ProductListLayout/index.vue";
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

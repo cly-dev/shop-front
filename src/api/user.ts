@@ -4,12 +4,17 @@
  * @Description: 用户接口
  */
 import axios from "./request";
-const api='/bugger';
+const api = "/bugger";
 //登录
-export const login=async(data:{account:string,password:string})=>{
-    return await axios.post(`${api}/login`,data);
-}
+export const login = async (data: { account: string; password: string }) => {
+  return await axios.post(`${api}/login`, data);
+};
 //注册
-export const register=async (data:{email:string,password:string,checkoutCode:string,code:string})=>{
-    return await axios.post(`${api}/register`,data)
-}
+export const register = async (data: {
+  email: string;
+  password: string;
+  checkoutCode: string;
+  code: string;
+}) => {
+  return await axios.post(`${api}/register`, data);
+};
