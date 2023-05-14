@@ -1314,6 +1314,11 @@
   "resolved" "https://registry.npmmirror.com/@sideway/pinpoint/-/pinpoint-2.0.0.tgz"
   "version" "2.0.0"
 
+"@socket.io/component-emitter@~3.1.0":
+  "integrity" "sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg=="
+  "resolved" "https://registry.npmmirror.com/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz"
+  "version" "3.1.0"
+
 "@soda/friendly-errors-webpack-plugin@^1.8.0":
   "integrity" "sha512-h2ooWqP8XuFqTXT+NyAFbrArzfQA7R6HTezADrvD9Re8fxMLTPPniLdqVTdDaO0eIoLaAwKT+d6w+5GeTk7Vbg=="
   "resolved" "https://registry.npmmirror.com/@soda/friendly-errors-webpack-plugin/-/friendly-errors-webpack-plugin-1.8.1.tgz"
@@ -3372,7 +3377,7 @@
   dependencies:
     "ms" "^2.1.1"
 
-"debug@^4.0.1", "debug@^4.1.0", "debug@^4.1.1", "debug@^4.3.2", "debug@^4.3.4":
+"debug@^4.0.1", "debug@^4.1.0", "debug@^4.1.1", "debug@^4.3.2", "debug@^4.3.4", "debug@~4.3.1", "debug@~4.3.2":
   "integrity" "sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ=="
   "resolved" "https://registry.npmmirror.com/debug/-/debug-4.3.4.tgz"
   "version" "4.3.4"
@@ -3646,6 +3651,22 @@
   "version" "1.4.4"
   dependencies:
     "once" "^1.4.0"
+
+"engine.io-client@~6.4.0":
+  "integrity" "sha512-GyKPDyoEha+XZ7iEqam49vz6auPnNJ9ZBfy89f+rMMas8AuiMWOZ9PVzu8xb9ZC6rafUqiGHSCfu22ih66E+1g=="
+  "resolved" "https://registry.npmmirror.com/engine.io-client/-/engine.io-client-6.4.0.tgz"
+  "version" "6.4.0"
+  dependencies:
+    "@socket.io/component-emitter" "~3.1.0"
+    "debug" "~4.3.1"
+    "engine.io-parser" "~5.0.3"
+    "ws" "~8.11.0"
+    "xmlhttprequest-ssl" "~2.0.0"
+
+"engine.io-parser@~5.0.3":
+  "integrity" "sha512-tjuoZDMAdEhVnSFleYPCtdL2GXwVTGtNjoeJd9IhIG3C1xs9uwxqRNEu5WpnDZCaozwVlK/nuQhpodhXSIMaxw=="
+  "resolved" "https://registry.npmmirror.com/engine.io-parser/-/engine.io-parser-5.0.6.tgz"
+  "version" "5.0.6"
 
 "enhanced-resolve@^5.0.0", "enhanced-resolve@^5.10.0":
   "integrity" "sha512-QHTXI/sZQmko1cbDoNAa3mJ5qhWUUNAq3vR0/YiD379fWQrcfuoX1+HW2S0MTt7XmoPLapdaDKUtelUSPic7hQ=="
@@ -6987,6 +7008,24 @@
     "ansi-styles" "^6.0.0"
     "is-fullwidth-code-point" "^4.0.0"
 
+"socket.io-client@^4.6.1":
+  "integrity" "sha512-5UswCV6hpaRsNg5kkEHVcbBIXEYoVbMQaHJBXJCyEQ+CiFPV1NIOY0XOFWG4XR4GZcB8Kn6AsRs/9cy9TbqVMQ=="
+  "resolved" "https://registry.npmmirror.com/socket.io-client/-/socket.io-client-4.6.1.tgz"
+  "version" "4.6.1"
+  dependencies:
+    "@socket.io/component-emitter" "~3.1.0"
+    "debug" "~4.3.2"
+    "engine.io-client" "~6.4.0"
+    "socket.io-parser" "~4.2.1"
+
+"socket.io-parser@~4.2.1":
+  "integrity" "sha512-DJtziuKypFkMMHCm2uIshOYC7QaylbtzQwiMYDuCKy3OPkjLzu4B2vAhTlqipRHHzrI0NJeBAizTK7X+6m1jVw=="
+  "resolved" "https://registry.npmmirror.com/socket.io-parser/-/socket.io-parser-4.2.2.tgz"
+  "version" "4.2.2"
+  dependencies:
+    "@socket.io/component-emitter" "~3.1.0"
+    "debug" "~4.3.1"
+
 "sockjs@^0.3.24":
   "integrity" "sha512-GJgLTZ7vYb/JtPSSZ10hsOYIvEYsjbNU+zPdIHcUaWVNUEPivzxku31865sSSud0Da0W4lEeOPlmw93zLQchuQ=="
   "resolved" "https://registry.npmmirror.com/sockjs/-/sockjs-0.3.24.tgz"
@@ -8131,6 +8170,11 @@
   "resolved" "https://registry.npmmirror.com/ws/-/ws-8.12.0.tgz"
   "version" "8.12.0"
 
+"ws@~8.11.0":
+  "integrity" "sha512-HPG3wQd9sNQoT9xHyNCXoDUa+Xw/VevmY9FoHyQ+g+rrMn4j6FB4np7Z0OhdTgjx6MgQLK7jwSy1YecU1+4Asg=="
+  "resolved" "https://registry.npmmirror.com/ws/-/ws-8.11.0.tgz"
+  "version" "8.11.0"
+
 "xhr@2.4.0":
   "integrity" "sha512-TUbBsdAuJbX8olk9hsDwGK8P1ri1XlV+PdEWkYw+HQQbpkiBR8PLgD1F3kQDPBs9l4Px34hP9rCYAZOCCAENbw=="
   "resolved" "https://registry.npmmirror.com/xhr/-/xhr-2.4.0.tgz"
@@ -8140,6 +8184,11 @@
     "is-function" "^1.0.1"
     "parse-headers" "^2.0.0"
     "xtend" "^4.0.0"
+
+"xmlhttprequest-ssl@~2.0.0":
+  "integrity" "sha512-QKxVRxiRACQcVuQEYFsI1hhkrMlrXHPegbbd1yn9UHOmRxY+si12nQYzri3vbzt8VdTTRviqcKxcyllFas5z2A=="
+  "resolved" "https://registry.npmmirror.com/xmlhttprequest-ssl/-/xmlhttprequest-ssl-2.0.0.tgz"
+  "version" "2.0.0"
 
 "xtend@^4.0.0":
   "integrity" "sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ=="

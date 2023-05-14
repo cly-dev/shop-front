@@ -21,19 +21,19 @@
 				</div>
 				<span class="text">官方客服</span>
 			</div>
-			<div class="AsideItem">
+			<div class="AsideItem" @click="handleOpen">
 				<div>
 					<el-icon class="icon"><Present /></el-icon>
 				</div>
 				<!-- TODO:活动弹窗 -->
 				<span class="text">活动</span>
 			</div>
-			<div class="AsideItem">
+			<!-- <div class="AsideItem">
 				<div>
 					<el-icon class="icon"><EditPen /></el-icon>
 				</div>
 				<span class="text">反馈</span>
-			</div>
+			</div> -->
 			<div class="AsideItem">
 				<div>
 					<el-icon class="upIcon"><Download /></el-icon>
@@ -44,17 +44,36 @@
 		</aside>
 	</section>
 	<LiveChat ref="liveChatRef"></LiveChat>
+	<el-dialog v-model="dialogVisible" title="活动" width="30%" :before-close="handleClose">
+		<div class="dialogContainer">
+			<img :src="config[0]?.imageUrl" />
+			<h2>{{ config[0]?.configTitle }}</h2>
+		</div>
+		<template #footer>
+			<span class="dialog-footer">
+				<el-button type="primary" @click="dialogVisible = false">我已知晓</el-button>
+			</span>
+		</template>
+	</el-dialog>
 </template>
 
 <script setup lang="ts">
 import {Service, EditPen, Download, Present} from '@element-plus/icons-vue'
-import {ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import HomeHeader from './components/HomeHeader/index.vue'
 import HomeFooter from './components/HomeFooter/index.vue'
 import LiveChat from './components/LiveChat/index.vue'
+import {getConfig} from '@/api/public'
 
+const dialogVisible = ref<boolean>(false)
 const liveChatRef = ref<any>(null)
-
+const config = ref<any[]>([
+	{
+		imageUrl: '',
+		configTitle: '',
+		url: '',
+	},
+])
 const handleClick = (type: 'liveChat') => {
 	switch (type) {
 		case 'liveChat': {
@@ -65,6 +84,19 @@ const handleClick = (type: 'liveChat') => {
 			return
 	}
 }
+const handleOpen = () => {
+	dialogVisible.value = true
+}
+const handleClose = (done: () => void) => {
+	done()
+}
+onMounted(() => {
+	getConfig().then((doc: any) => {
+		if (doc.activity && doc.activity.length > 0) {
+			config.value = doc.activity
+		}
+	})
+})
 </script>
 
 <style lang="scss" scoped>
@@ -79,6 +111,12 @@ const handleClick = (type: 'liveChat') => {
 	align-items: center;
 	width: 100%;
 	background-color: #fafafa;
+}
+.dialogContainer {
+	width: 100%;
+	h2 {
+		margin-top: 20px;
+	}
 }
 .pageMainer {
 	max-width: 1060px;

@@ -17,5 +17,10 @@ declare namespace MessageType {
 		createTime?: number
 		//类型
 		type: '1' | '2'
+		amdinInfo?: {
+			userName: string
+			avater: string
+			adminId: string
+		}
 	}
 }

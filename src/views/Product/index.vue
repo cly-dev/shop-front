@@ -65,7 +65,7 @@
 						<!-- TODO:加购和购买逻辑 -->
 						<div class="infoPay">
 							<button class="btnBuyNow">立即购买</button>
-							<button class="btnBuyAddCart">
+							<button class="btnBuyAddCart" @click="handleAddCart">
 								<el-icon class="cartIcon"><ShoppingTrolley /></el-icon>
 								加入购物车
 							</button>
@@ -105,7 +105,7 @@
 					</el-col>
 				</el-row>
 			</div>
-			<article class="mt-5" v-html="productInfo.desc"></article>
+			<article class="mt-5" v-html="productInfo?.desc"></article>
 		</div>
 	</div>
 </template>
@@ -118,15 +118,25 @@ import {getProductDetail} from '@/api/product'
 import {CopyDocument, ShoppingTrolley} from '@element-plus/icons-vue'
 import {copyAction} from '@/untils/common'
 import CountSelect from '@/components/CountSelect/index.vue'
+import {setShopCart} from '@/untils/shopCart'
 import BreadCrumbs from '@/components/BreadCrumbs/index.vue'
 import MyMap from '@/untils/map'
 
-const productInfo = ref<any>({
-	qty: 66,
-})
+const productInfo = ref<any>({})
 const route = useRoute()
 const count = ref<number>(1)
 const fieldList = ref<any>([])
+const handleAddCart = () => {
+	setShopCart({
+		_id: productInfo.value._id,
+		productTitle: productInfo.value.productTitle,
+		count: count.value,
+		total: productInfo.value.total,
+		discountPrice: productInfo.value.discountPrice,
+		imageUrl: productInfo.value.imageUrl,
+		...productInfo,
+	})
+}
 
 onMounted(() => {
 	MyMap.init().then(

@@ -4,20 +4,20 @@
  * @Description: 客服发送信息
 -->
 <template>
-	<div class="accepterTime">2023年4月17日 8:30</div>
+	<div class="accepterTime">{{ format(info?.createTime as number) }}</div>
 	<div class="accepterBox">
 		<div class="accepterInfo">
 			<img :src="avater" class="avater" />
 			<div class="infoName">官方客服 {{ info?.nickName }}</div>
 		</div>
-		<div class="msgBpx">
-			{{ info.content }}
-		</div>
+		<div class="msgBpx" v-html="info.content"></div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import liveChatAvater from '@/assets/img/liveChat.jpeg'
+import {format} from '@/untils/common'
+
 type Props = {
 	info: MessageType.MessageItem
 }
@@ -41,7 +41,8 @@ const {
 	display: flex;
 	flex-direction: row-reverse;
 	padding: 0 10px 10px 10px;
-	align-items: center;
+	align-items: flex-start;
+
 	.accepterInfo {
 		text-align: center;
 	}
@@ -63,6 +64,7 @@ const {
 		padding: 5px;
 		color: white;
 		position: relative;
+		top: 10px;
 		&::before {
 			content: '';
 			position: absolute;
@@ -75,6 +77,10 @@ const {
 			border-bottom: 10px solid transparent;
 			border-left: 10px solid #409eff;
 			border-right: 10px solid transparent;
+		}
+		img {
+			height: 40px !important;
+			width: 40px !important;
 		}
 	}
 }

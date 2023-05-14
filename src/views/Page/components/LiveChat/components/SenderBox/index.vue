@@ -4,20 +4,20 @@
  * @Description: 用户发送信息
 -->
 <template>
-	<div class="accepterTime">{{ info?.createTime }}</div>
+	<div class="accepterTime">{{ format(info?.createTime as number) }}</div>
 	<div class="accepterBox">
 		<div class="accepterInfo">
-			<img :src="avater" class="avater" />
-			<div class="infoName">{{ info?.nickName }}</div>
+			<img :src="useAccount.userData?.avater || userAvater" class="avater" />
+			<div class="infoName">{{ useAccount.userData?.userName }}</div>
 		</div>
-		<div class="msgBpx">
-			{{ info?.content }}
-		</div>
+		<div class="msgBpx" v-html="info.content"></div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import userAvater from '@/assets/img/avater.jpg'
+import useStore from '@/pinia/user'
+import {format} from '@/untils/common'
 
 import {defineProps, withDefaults} from 'vue'
 
@@ -25,8 +25,8 @@ type Props = {
 	info: MessageType.MessageItem
 }
 const props = withDefaults(defineProps<Props>(), {})
+const useAccount = useStore()
 const {info} = props
-const {avater = userAvater} = info
 </script>
 
 <style lang="scss" scoped>
@@ -37,11 +37,12 @@ const {avater = userAvater} = info
 	position: relative;
 	top: 5px;
 }
+
 .accepterBox {
 	display: flex;
 	flex-direction: row;
 	padding: 0 10px 10px 10px;
-	align-items: center;
+	align-items: flex-start;
 	.accepterInfo {
 		text-align: center;
 	}
@@ -63,6 +64,7 @@ const {avater = userAvater} = info
 		padding: 5px;
 		color: white;
 		position: relative;
+		top: 10px;
 		&::before {
 			content: '';
 			position: absolute;

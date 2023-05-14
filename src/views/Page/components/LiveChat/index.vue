@@ -11,16 +11,16 @@
 			</div>
 		</template>
 		<div class="dialogMainer">
-			<div class="msgList">
+			<div class="msgList" ref="listRef">
 				<div v-for="item in list" :key="item.createTime">
-					<AccepterBox v-if="item.type !== '2'" :info="item"></AccepterBox>
+					<AccepterBox v-if="item.type === '2'" :info="item"></AccepterBox>
 					<SenderBox v-else :info="item"></SenderBox>
 				</div>
 			</div>
 			<div class="input">
 				<div class="inputOperter">
-					<el-icon class="icon" title="上传图片"><Picture /></el-icon>
-					<el-icon class="icon videoIcon" title="上传视频"><VideoCamera /></el-icon>
+					<el-icon class="icon" title="上传图片" @click="() => handleClick('img')"><Picture /></el-icon>
+					<el-icon class="icon videoIcon" title="上传视频" @click="() => handleClick('video')"><VideoCamera /></el-icon>
 				</div>
 				<!-- 输入框 -->
 				<textarea v-model.trim.lazy="content" maxlength="120" class="inputText" placeholder="请输入你的问题"></textarea>
@@ -29,46 +29,52 @@
 		<template #footer>
 			<div style="margin-top: -20px">
 				<el-button @click="() => (dialogVisible = false)">取消</el-button>
-				<el-button type="primary">发送</el-button>
+				<el-button type="primary" @click="handleSubmit">发送</el-button>
 			</div>
 		</template>
 	</el-dialog>
+	<input style="display: none" type="file" ref="inputRef" @change="handleUpdate" />
 </template>
 
 <script setup lang="ts">
 import {Picture, VideoCamera} from '@element-plus/icons-vue'
-import {ref, defineExpose, watch} from 'vue'
+import {ref, defineExpose, watch, onMounted, onUnmounted, nextTick} from 'vue'
+import {useRouter} from 'vue-router'
 import AccepterBox from './components/AccepterBox/index.vue'
 import SenderBox from './components/SenderBox/index.vue'
-
+import {upload} from '@/api/public'
+import {sendMessageSocket} from '@/socket/message'
+import {createMessage, getMessageList} from '@/api/socket'
+import socket from '@/socket'
+import useStore from '@/pinia/user'
+import {message, checkImg, checkVideo} from '@/untils/common'
+const useAccount = useStore()
+const listRef = ref<HTMLDivElement>()
 const dialogVisible = ref<boolean>(false)
 const content = ref<string>('')
+const inputRef = ref<any>(null)
+const router = useRouter()
+const updateType = ref<'img' | 'video' | ''>('img')
 
 //消息列表
-const list = ref<Array<MessageType.MessageItem>>([
-	{
-		accountId: '1',
-		content: '你好!,有什么需要帮助的嘛?',
-		nickName: '后生1',
-		createTime: '2023年3月3日 8:30',
-		type: '1',
-	},
-	{
-		accountId: '2',
-		content: '你好!',
-		nickName: '用户',
-		createTime: '2023年3月3日 8:31',
-		type: '2',
-	},
-	{
-		accountId: '1',
-		content: '你好!,有什么需要帮助的嘛?',
-		nickName: '后生1',
-		createTime: '2023年3月3日 8:33',
-		type: '1',
-	},
-])
-
+const list = ref<Array<MessageType.MessageItem>>()
+const handleSubmit = () => {
+	let adminId: any = '12345'
+	if (list.value?.length) {
+		adminId = list.value[list.value?.length - 1].amdinInfo?.adminId
+	}
+	createMessage({content: content.value, adminId}).then((res: any) => {
+		getList()
+		sendMessageSocket({accountId: useAccount.userData?.accountId as string, content: content.value, adminId})
+		content.value = ''
+	})
+}
+const handleClick = (type: 'img' | 'video') => {
+	updateType.value = type
+	if (inputRef.value) {
+		inputRef.value.click()
+	}
+}
 watch(
 	() => dialogVisible.value,
 	(newV: boolean) => {
@@ -77,10 +83,76 @@ watch(
 		}
 	},
 )
-
+function getList() {
+	getMessageList().then(doc => {
+		list.value = doc as any
+		nextTick(() => {
+			if (listRef.value) {
+				listRef.value.scrollTop = listRef.value.scrollHeight
+			}
+		})
+	})
+}
+function handleUpdate(e: any) {
+	const file = e.target.files[0]
+	const formData = new FormData()
+	if (updateType.value === 'img') {
+		if (checkImg(file.type)) {
+			formData.append('file', file)
+		} else {
+			message('只允许上传png、jpg、webp的图片')
+			return
+		}
+	} else if (updateType.value === 'video') {
+		if (checkVideo(file.type)) {
+			formData.append('file', file)
+		} else {
+			message('只允许上传mp4、mov视频')
+			return
+		}
+	}
+	upload(formData)
+		.then((v: any) => {
+			let el = ''
+			if (updateType.value === 'img') {
+				el = `<img src='${v}' style="width:40px;height:40px"/>`
+			} else {
+				el = `<video src='${v}' controls autoplay/>`
+			}
+			let adminId: any = '12345'
+			if (list.value?.length) {
+				adminId = list.value[list.value?.length - 1].amdinInfo?.adminId
+			}
+			createMessage({content: el, adminId}).then((res: any) => {
+				getList()
+				sendMessageSocket({accountId: useAccount.userData?.accountId as string, content: el, adminId})
+				content.value = ''
+			})
+		})
+		.finally(() => {
+			inputRef.value.value = ''
+			updateType.value = ''
+		})
+}
+onMounted(() => {
+	getList()
+	socket.on('admin-message', () => {
+		getList()
+	})
+	socket.on('system-message', () => {})
+})
+onUnmounted(() => {
+	socket.off('admin-message')
+	socket.off('system-message')
+})
 defineExpose({
 	openModal: () => {
-		dialogVisible.value = true
+		if (useAccount.token) {
+			dialogVisible.value = true
+		} else {
+			message('请先登录')
+			router.push('/login')
+		}
 	},
 })
 const handleClose = (done: () => void) => {

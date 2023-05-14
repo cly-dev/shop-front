@@ -15,14 +15,14 @@ import {withDefaults, defineProps} from 'vue'
 import {useRouter} from 'vue-router'
 
 type Props = {
-	info: Required<Pick<CategoryType.CategoryItem, 'seoUrl' | 'categoryTitle' | 'iconUrl'>>
+	info: Required<Pick<CategoryType.CategoryItem, 'seoUrl' | 'categoryTitle' | 'iconUrl' | '_id'>>
 }
 const props = withDefaults(defineProps<Props>(), {})
 const router = useRouter()
 const {info} = props
 
 const toLink = () => {
-	router.push(`/category/${info.seoUrl}`)
+	router.push(`/category/${info._id}`)
 }
 </script>
 

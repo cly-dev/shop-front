@@ -20,11 +20,21 @@
 				<span class="nickName">{{ userData?.userName }}</span>
 				<component v-if="isLogin">
 					<div class="headerOperate">
-						<el-badge :value="12" class="item">
-							<el-icon title="购物车" class="icon">
-								<ShoppingTrolley />
-							</el-icon>
-						</el-badge>
+						<el-popover placement="top-start" :width="300" trigger="hover">
+							<template #default>
+								<div class="cartBox" v-if="useShopCart.cartList.length > 0">
+									<CartItem v-for="(item, index) in useShopCart.cartList" :key="index" :item-data="item"></CartItem>
+								</div>
+								<el-empty description="暂无商品" v-else />
+							</template>
+							<template #reference>
+								<el-badge :value="total" class="item">
+									<el-icon title="购物车" class="icon" @click="() => router.push('/cart')">
+										<ShoppingTrolley />
+									</el-icon>
+								</el-badge>
+							</template>
+						</el-popover>
 						<el-icon title="个人中心" class="icon"><User /></el-icon>
 					</div>
 				</component>
@@ -40,10 +50,15 @@
 <script setup lang="ts">
 import {ShoppingTrolley, User} from '@element-plus/icons-vue'
 import {useRouter, useRoute} from 'vue-router'
-import {ref, watch} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import {useAccount} from '@/hook/useAccount'
+import CartItem from './components/CartItem/index.vue'
+import useShopCartStore from '@/pinia/shopCart'
+
+const useShopCart = useShopCartStore()
 const router = useRouter()
 const route = useRoute()
+const total = ref<number>(useShopCart.cartList.length)
 const {userData, isLogin} = useAccount()
 
 const keyWord = ref<string>('')
@@ -57,8 +72,6 @@ const toLogin = () => {
 const toRegister = () => {
 	router.push('/register')
 }
-console.log(router)
-console.log('路由')
 watch(
 	() => route.query,
 	newV => {
@@ -68,6 +81,10 @@ watch(
 		immediate: true,
 	},
 )
+useShopCart.$subscribe((motation, state) => {
+	console.log(state)
+	total.value = state.cartList.length
+})
 </script>
 
 <style scoped lang="scss">
@@ -79,6 +96,14 @@ header {
 	width: 100%;
 	z-index: 99;
 	border-bottom: 1px solid rgb(237, 237, 237);
+}
+.cartBox {
+	height: 300px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	overflow-y: auto;
+	margin: -10px;
 }
 .shopHeader {
 	width: 100%;
