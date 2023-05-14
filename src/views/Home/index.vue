@@ -27,12 +27,11 @@
 		</div>
 		<!-- 热门类目 -->
 		<div class="hotCategory">
-			<HotCategoryItem v-for="item in config?.hotCategory" :key="item?._id" :info="item?.itemData"></HotCategoryItem>
+			<HotCategoryItem v-for="item in config?.hotCategory" :key="item?._id" :info="item.itemData"></HotCategoryItem>
 		</div>
 		<!-- 类目推荐 -->
 		<div class="recommendCategory">
-			<RecomendCategory :list="list"></RecomendCategory>
-			<RecomendCategory :list="list"></RecomendCategory>
+			<RecomendCategory v-for="item in config.category" :key="item._id" :info="item.itemData"></RecomendCategory>
 		</div>
 		<!-- 商品推荐 -->
 		<div class="recommendProduct">
@@ -61,24 +60,9 @@ import HotCategoryItem from './component/HotCategoryItem/index.vue'
 import RecomendCategory from './component/RecomendCategory/index.vue'
 import ProductItemCard from '@/components/ProductItemCard/index.vue'
 import Img from '@/assets/img/icon/1.jpg'
-import ImgList from '@/assets/img/banner'
-import Img1 from '@/assets/img/1/2.jpg'
-import Img2 from '@/assets/img/1/3.jpg'
-const config = ref<any>({})
-
-const categoryList = ref<any[]>([
-	{
-		title: '口红',
-		iconUrl: Img1,
-		seoUrl: '1',
-	},
-	{
-		title: '口红',
-		iconUrl: Img2,
-		seoUrl: '2',
-	},
-])
-
+const config = ref<any>({
+	category: [],
+})
 const onSwiper = (swiper: any) => {
 	console.log(swiper)
 }

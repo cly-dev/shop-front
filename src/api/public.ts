@@ -11,7 +11,9 @@ export const getCode = (params: {checkoutCode: number; email: string}) => {
 }
 //上传文件
 export const upload = (file: FormData) => {
-	return axios.post(`${api}/upload`, {file, requestType: 'form-data'})
+	return axios.post(`${api}/upload`, file, {
+		requestType: 'form-data',
+	})
 }
 
 //获取首页内容配置

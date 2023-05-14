@@ -6,6 +6,7 @@
 declare namespace CategoryType {
 	//类目类型
 	type CategoryItem = {
+		_id: string
 		//标题
 		categoryTitle: string
 		//id

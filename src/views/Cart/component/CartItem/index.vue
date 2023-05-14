@@ -8,11 +8,11 @@
 		<el-row class="listField">
 			<el-col :span="10">
 				<div class="field-title">
-					<img src="@/assets/img/1/1.jpg" />
+					<img :src="itemData.imageUrl" />
 					<div class="productInfo">
-						<h1>{{ itemData.title }}</h1>
+						<h1>{{ itemData.productTitle }}</h1>
 						<div class="tips">
-							<ProductTips></ProductTips>
+							<ProductTips :list="getList(itemData)"></ProductTips>
 						</div>
 					</div>
 				</div>
@@ -22,7 +22,7 @@
 			</el-col>
 			<el-col :span="4">
 				<div class="field-count">
-					<CountSelect v-model="count" :show-tips="false" :qty="props.qty"></CountSelect>
+					<CountSelect v-model="count" :show-tips="false" :qty="itemData.total" :status="itemData.status"></CountSelect>
 				</div>
 			</el-col>
 			<el-col :span="4">
@@ -47,7 +47,7 @@ import ProductTips from '@/components/ProductTips/index.vue'
 import CountSelect from '@/components/CountSelect/index.vue'
 
 type Props = {
-	itemData: ProductType.ItemType
+	itemData: ProductType.ItemType & {total: number}
 	count: number
 	qty: number
 }
@@ -56,6 +56,16 @@ const props = withDefaults(defineProps<Props>(), {
 	count: 1,
 })
 const count = ref<number>(props.count)
+const getList = (itemData: any) => {
+	const arr = ['freightFree', 'priceEnsure', 'allergyTurn', 'freightInspection', 'notReason']
+	Object.keys(itemData).forEach((item: any) => {
+		const serveList = []
+		if (arr.includes(item)) {
+			serveList.push(item)
+		}
+		return serveList
+	})
+}
 watch(
 	() => count.value,
 	(newV: number) => {

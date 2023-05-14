@@ -24,5 +24,6 @@ declare namespace ProductType {
 		//免运费
 		freightFree?: boolean
 		brand?: string
+		status: '0' | '1'
 	}
 }

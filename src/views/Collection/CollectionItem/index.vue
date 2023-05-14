@@ -4,7 +4,7 @@
  * @Description: 
 -->
 <template>
-	<div class="categoryItem" :style="props.styles">
+	<div class="categoryItem">
 		<RouterLink :to="`/category/${info._id}`">
 			<div class="itemInfo">
 				<img :src="info?.iconUrl ?? '@/assets/img/icon/1.jpg'" alt="icon" class="infoIcon" />
@@ -18,11 +18,10 @@
 </template>
 
 <script setup lang="ts">
+import {defineProps, withDefaults} from 'vue'
 import {ArrowRight} from '@element-plus/icons-vue'
-import {CSSProperties, defineProps, withDefaults} from 'vue'
 type Props = {
-	info: CategoryType.CategoryItem
-	styles?: CSSProperties
+	info: any
 }
 const props = withDefaults(defineProps<Props>(), {})
 const {info} = props
@@ -30,8 +29,8 @@ const {info} = props
 
 <style lang="scss" scoped>
 .categoryItem {
-	width: calc((100% - 20px) / 2);
-	height: calc((100% - 30px) / 4);
+	width: 100%;
+	height: 80px;
 	display: inline-block;
 	border-radius: 10px;
 	box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.1);

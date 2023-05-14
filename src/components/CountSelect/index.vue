@@ -15,12 +15,12 @@
 			<el-icon><Plus /></el-icon>
 		</div>
 		<!-- TODO: 库存状态标识 -->
-		<template v-if="props.status === '0'">
+		<!-- <template v-if="props.status === '0'">
 			<div class="totalStatus" v-if="props.qty > 0 && props.qty > 5">有货</div>
 			<div class="totalStatus" v-else-if="props.qty > 0 && props.qty <= 5" style="color: #909399">有货</div>
 			<div class="totalStatus" style="color: #f56c6c" v-else>售完</div>
 		</template>
-		<div class="totalStatus" v-else>已下架</div>
+		<div class="totalStatus" v-else>已下架</div> -->
 	</div>
 </template>
 

@@ -6,9 +6,10 @@
 <template>
 	<div class="shopCart">
 		<BreadCrumbs :nav-list="[{title: '购物车', disabled: true, href: '/cart'}]"></BreadCrumbs>
+
 		<div class="cartContainer">
 			<div class="cartHeader">
-				<h2>购物车 (全部{{ total }}个)</h2>
+				<h2>购物车 (全部{{ cartList.length }}个)</h2>
 				<div class="cartOperate">
 					<span>已选商品（不含运费)</span>
 					<span class="price">¥ {{ totalCost }}</span>
@@ -38,14 +39,15 @@
 						<div class="field-operate">操作</div>
 					</el-col>
 				</el-row>
-				<div>
+				<div v-if="cartList.length > 0">
 					<el-checkbox-group class="cartItemsList" v-model="checkList">
-						<div v-for="item in itemList" :key="item.id">
-							<el-checkbox :value="item.id" class="cartItem" :label="item.id">&nbsp;</el-checkbox>
+						<div v-for="item in cartList" :key="item.id">
+							<el-checkbox :value="item.id" class="cartItem" :label="item._id">&nbsp;</el-checkbox>
 							<CartItem :qty="item.qty" v-model:count="item.count" :item-data="item"></CartItem>
 						</div>
 					</el-checkbox-group>
 				</div>
+				<el-empty v-else description="请选择商品加购哦" />
 			</div>
 		</div>
 	</div>
@@ -54,39 +56,20 @@
 <script setup lang="ts">
 import BreadCrumbs from '@/components/BreadCrumbs/index.vue'
 import CartItem from './component/CartItem/index.vue'
-import {computed, reactive, ref, watch} from 'vue'
+import {computed, ref, watch} from 'vue'
+import useShopCartStore from '@/pinia/shopCart'
+import {setShopCart} from '@/untils/shopCart'
 
-import Img1 from '@/assets/img/1/1.jpg'
-import Img2 from '@/assets/img/1/2.jpg'
-
+const {cartList} = useShopCartStore()
 const total = ref<number>(2)
 const isAll = ref<boolean>(false)
 const checkList = ref<any>([])
 
-const itemList = reactive<Array<ProductType.ItemType & {count: number; qty: number}>>([
-	{
-		id: '1',
-		title: '24h内顺丰发货 38礼物TF电光樱桃限定礼盒 口红套装新色',
-		count: 1,
-		imageUrl: Img1,
-		discountPrice: 23.0,
-		qty: 12,
-	},
-	{
-		id: '2',
-		title: '24h内顺丰发货 38礼物TF电光樱桃限定礼盒 口红套装新色',
-		count: 1,
-		imageUrl: Img2,
-		discountPrice: 23.0,
-		qty: 12,
-	},
-])
 const totalCost = computed(() => {
-	return itemList
+	return cartList
 		.reduce((pre: number, item: any) => {
 			console.log(checkList.value.includes(item))
-			if (checkList.value.includes(item.id)) {
-				console.log(item)
+			if (checkList.value.includes(item._id)) {
 				return pre + item.count * item.discountPrice
 			}
 			return pre
@@ -98,7 +81,7 @@ watch(
 	(newV: boolean) => {
 		console.log(newV)
 		if (newV) {
-			checkList.value = itemList.map((item: any) => item.id)
+			checkList.value = cartList.map((item: any) => item.id)
 		}
 	},
 )
@@ -107,6 +90,7 @@ watch(
 <style lang="scss" scoped>
 .shopCart {
 	width: 100%;
+	min-width: 1050px;
 	overflow: hidden;
 	// margin: 0 60px;
 	.cartContainer {
