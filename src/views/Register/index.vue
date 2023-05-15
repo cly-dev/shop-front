@@ -151,54 +151,51 @@
       //点击注册
 
       async function handleRegister() {
-      
-        const v = new volidor(toRaw(FormData), {
-          password: [
-            {
-              require: true,
-              msg: "密码不能为空",
-            },
-            {
-              pattern: /^[a-zA-Z0-9]\w{6,12}$/,
-              msg: "密码格式错误",
-            },
-          ],
-          comfirm: [
-            {
-              key: "password",
-              msg: "两次输入的密码不一致",
-            },
-            {
-              require: true,
-              msg: "确认密码不能为空",
-            },
-          ],
-          email: [
-            {
-              require: true,
-              msg: "邮箱不能为空",
-            },
-            { type: "email", msg: "邮箱格式错误" },
-          ],
-          code: [
-            {
-              require: true,
-              msg: "邮箱验证码不能为空",
-            },
-          ],
-        });
-        if (
-          v.valid((msg) => {
-            message(msg);
-          })
-        ) {
+        if(checkEmail() && checkPassword() && checkComfirmPassword()){
+          if(FormData.code){
           register(toRaw(FormData)).then((res)=>{
             message('注册成功');
             Router.push('/login');
           })
+        }else{
+          message("验证码不能为空")
+        }
         }
       }
-  
+      
+      function checkPassword(){
+        if(FormData.password){
+         if(/^[a-zA-Z0-9]\w{6,12}$/.test(FormData.password)){
+          return true;
+         }else{
+          message("密码格式错误")
+         }
+        }else{
+          message("密码不能为空")
+        }
+      }
+      function checkComfirmPassword(){
+        if(FormData.comfirm){
+          if(FormData.comfirm!==FormData.password){
+            message('次输入的密码不一致')
+          }else{
+            return true
+          }
+        }else{
+          message("确认密码不能为空")
+        }
+      }
+      function checkEmail(){
+        if(FormData.email){
+          if( /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(FormData.email)){
+            return true
+          }else{
+            message("邮箱格式错误")
+          }
+        }else{
+          message("邮箱不能为空")
+        }
+      }
       return {
         FormData,
         isLoading,
