@@ -4,15 +4,9 @@
  * @Description: 尾部
 -->
 <template>
-    <div>
-        尾部
-    </div>
+	<!-- <div>尾部</div> -->
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts"></script>
 
-</script>
-
-<style scoped>
-
-</style>
+<style scoped></style>

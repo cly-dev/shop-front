@@ -4,15 +4,60 @@
  * @Description: 类目
 -->
 <template>
-        <BreadCrumbs :nav-list="[{title:'类目详情',href:'/',disabled:true}]"></BreadCrumbs>
-        <ProductListLayout></ProductListLayout>
+	<BreadCrumbs :nav-list="[{title: '类目详情', href: '/', disabled: true}]"></BreadCrumbs>
+	<ProductListLayout
+		:filter="itemData.filter"
+		:total="itemData.total"
+		:item-list="itemList"
+		:loading="itemData.loading"
+		@search="handleSearch"
+	></ProductListLayout>
 </template>
 
 <script setup lang="ts">
-import BreadCrumbs from "@/components/BreadCrumbs/index.vue";
-import ProductListLayout from "@/components/ProductListLayout/index.vue";
+import BreadCrumbs from '@/components/BreadCrumbs/index.vue'
+import ProductListLayout from '@/components/ProductListLayout/index.vue'
+import {search} from '@/api/product'
+import {ref, watch} from 'vue'
+import {useRoute} from 'vue-router'
+const route = useRoute()
+console.log(route.params)
+console.log('-=-------------1234')
+const itemData = ref<any>({
+	total: 0,
+	filter: '',
+	itemList: [],
+	loading: false,
+})
+const itemList = ref<any>([])
+
+const handleSearch = (v: any) => {
+	itemData.loading = true
+	if (route.params?.seoUrl) {
+		Object.assign(v, {categoryId: route.params?.seoUrl})
+	}
+	if (route.query?.keyWord) {
+		Object.assign(v, {keyword: route.query?.keyWord})
+	}
+	search(v)
+		.then((res: any) => {
+			itemData.value.total = res.total
+			itemData.value.filter = {...res.filter}
+			itemList.value = res.itemList.map((item: any) => ({...item}))
+		})
+		.finally(() => {
+			itemData.loading = false
+		})
+}
+watch(
+	() => route.query,
+	(newV: any) => {
+		handleSearch({page: 1, size: 20, keyword: newV.keywWord})
+	},
+	{
+		immediate: true,
+	},
+)
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
