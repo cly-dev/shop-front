@@ -4,14 +4,7 @@ import {message} from './../untils/common'
  * @Date: 2023-02-10 20:15:33
  * @Description:
  */
-import {
-	createRouter,
-	createWebHistory,
-	NavigationGuardNext,
-	RouteLocationNormalized,
-	RouteRecordRaw,
-	RouterScrollBehavior,
-} from 'vue-router'
+import {createRouter, createWebHistory, NavigationGuardNext, RouteLocationNormalized, RouteRecordRaw} from 'vue-router'
 import useStore from '@/pinia/user'
 const routes: Array<RouteRecordRaw> = [
 	{
@@ -53,6 +46,11 @@ const routes: Array<RouteRecordRaw> = [
 				component: () => import('../views/Cart/index.vue'),
 			},
 			{
+				path: '/account',
+				name: 'account',
+				component: () => import('@/views/Account/index.vue'),
+			},
+			{
 				path: '/',
 				redirect: {
 					path: 'home',
@@ -73,6 +71,7 @@ const routes: Array<RouteRecordRaw> = [
 			auth: 'login',
 		},
 	},
+
 	{
 		path: '/register',
 		name: 'register',

@@ -3,8 +3,9 @@
  * @Date: 2023-02-21 21:16:02
  * @Description: 用户信息
  */
-import {SETUSERDATA, RESETUSERDATA} from './actionType'
+import {SETUSERDATA, RESETUSERDATA, UPDATEUSERDATA} from './actionType'
 import {defineStore} from 'pinia'
+import {getInfoDetail} from '@/api/user'
 
 export default defineStore('user', {
 	state(): {
@@ -23,6 +24,14 @@ export default defineStore('user', {
 		},
 		[RESETUSERDATA]: function () {
 			this.userData = null
+		},
+		[UPDATEUSERDATA]: function () {
+			getInfoDetail().then((res: any) => {
+				if (res) {
+					this.token = res.token
+					this.userData = res
+				}
+			})
 		},
 	},
 	persist: {

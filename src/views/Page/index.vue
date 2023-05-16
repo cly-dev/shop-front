@@ -120,6 +120,7 @@ onMounted(() => {
 }
 .pageMainer {
 	max-width: 1060px;
+	width: 100%;
 	margin-top: 80px;
 	padding-top: 20px;
 	margin-left: 30px;

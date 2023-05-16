@@ -7,6 +7,8 @@
 export const SETUSERDATA = 'SETUSERDATA'
 //重置用户的信息
 export const RESETUSERDATA = 'RESETUSERDATA'
+//更新用户的信息
+export const UPDATEUSERDATA = 'UPDATEUSERDATA'
 
 //设置购物车
 export const SETSHOPCART = 'SETSHOPCART'

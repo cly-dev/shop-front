@@ -84,14 +84,16 @@ watch(
 	},
 )
 function getList() {
-	getMessageList().then(doc => {
-		list.value = doc as any
-		nextTick(() => {
-			if (listRef.value) {
-				listRef.value.scrollTop = listRef.value.scrollHeight
-			}
+	if (useAccount.token) {
+		getMessageList().then(doc => {
+			list.value = doc as any
+			nextTick(() => {
+				if (listRef.value) {
+					listRef.value.scrollTop = listRef.value.scrollHeight
+				}
+			})
 		})
-	})
+	}
 }
 function handleUpdate(e: any) {
 	const file = e.target.files[0]

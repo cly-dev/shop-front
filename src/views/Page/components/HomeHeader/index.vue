@@ -35,7 +35,9 @@
 								</el-badge>
 							</template>
 						</el-popover>
-						<el-icon title="个人中心" class="icon"><User /></el-icon>
+						<el-icon title="个人中心" class="icon" @click="() => router.push(isLogin ? '/account' : '/login')">
+							<User />
+						</el-icon>
 					</div>
 				</component>
 				<component v-else>
