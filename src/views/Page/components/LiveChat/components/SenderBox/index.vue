@@ -43,6 +43,8 @@ const {info} = props
 	flex-direction: row;
 	padding: 0 10px 10px 10px;
 	align-items: flex-start;
+	flex-direction: row-reverse;
+
 	.accepterInfo {
 		text-align: center;
 	}
@@ -51,8 +53,8 @@ const {info} = props
 		font-size: 12px;
 	}
 	.msgBpx {
-		margin-left: 15px;
-		border-top-right-radius: 5px;
+		margin-right: 15px;
+		border-top-left-radius: 5px;
 		border-bottom-right-radius: 5px;
 		border-bottom-left-radius: 5px;
 		min-height: 30px;
@@ -60,23 +62,28 @@ const {info} = props
 		align-items: center;
 		max-width: calc(100% - 80px);
 		text-align: left;
-		background-color: $SuccessColor;
 		padding: 5px;
 		color: white;
 		position: relative;
 		top: 10px;
+		background-color: $SuccessColor;
+
 		&::before {
 			content: '';
 			position: absolute;
-			left: -20.1px;
+			right: -20.1px;
 			border: 1px solid red;
 			top: 0px;
 			height: 0;
 			width: 0;
 			border-top: 10px solid transparent;
 			border-bottom: 10px solid transparent;
-			border-left: 10px solid transparent;
-			border-right: 10px solid $SuccessColor;
+			border-left: 10px solid $SuccessColor;
+			border-right: 10px solid transparent;
+		}
+		img {
+			height: 40px !important;
+			width: 40px !important;
 		}
 	}
 }

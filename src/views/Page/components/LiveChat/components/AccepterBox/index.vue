@@ -39,7 +39,6 @@ const {
 }
 .accepterBox {
 	display: flex;
-	flex-direction: row-reverse;
 	padding: 0 10px 10px 10px;
 	align-items: flex-start;
 
@@ -51,8 +50,8 @@ const {
 		font-size: 12px;
 	}
 	.msgBpx {
-		margin-right: 15px;
-		border-top-left-radius: 5px;
+		margin-left: 15px;
+		border-top-right-radius: 5px;
 		border-bottom-right-radius: 5px;
 		border-bottom-left-radius: 5px;
 		min-height: 30px;
@@ -61,6 +60,7 @@ const {
 		max-width: calc(100% - 80px);
 		text-align: left;
 		background-color: #409eff;
+
 		padding: 5px;
 		color: white;
 		position: relative;
@@ -68,19 +68,15 @@ const {
 		&::before {
 			content: '';
 			position: absolute;
-			right: -20.1px;
+			left: -20.1px;
 			border: 1px solid red;
 			top: 0px;
 			height: 0;
 			width: 0;
 			border-top: 10px solid transparent;
 			border-bottom: 10px solid transparent;
-			border-left: 10px solid #409eff;
-			border-right: 10px solid transparent;
-		}
-		img {
-			height: 40px !important;
-			width: 40px !important;
+			border-left: 10px solid transparent;
+			border-right: 10px solid #409eff;
 		}
 	}
 }

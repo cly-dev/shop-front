@@ -5,10 +5,10 @@
 -->
 <template>
 	<nav>
-		<RouterLink to="/home" class="navItem">
+		<a class="navItem" href="/home">
 			首页
 			<el-icon class="icon"><ArrowRight /></el-icon>
-		</RouterLink>
+		</a>
 		<RouterLink
 			v-for="(item, index) in props.navList"
 			:key="item.title"

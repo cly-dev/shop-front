@@ -13,8 +13,8 @@
 		<div class="dialogMainer">
 			<div class="msgList" ref="listRef">
 				<div v-for="item in list" :key="item.createTime">
-					<AccepterBox v-if="item.type === '2'" :info="item"></AccepterBox>
-					<SenderBox v-else :info="item"></SenderBox>
+					<SenderBox v-if="item.type === '1'" :info="item"></SenderBox>
+					<AccepterBox v-else :info="item"></AccepterBox>
 				</div>
 			</div>
 			<div class="input">
