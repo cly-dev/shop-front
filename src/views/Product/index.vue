@@ -36,7 +36,7 @@
 						<!-- 信息 -->
 						<h2 class="infoItemId">
 							<span class="label">序列号:</span>
-							<span class="itemId text">{{ productInfo._id }}</span>
+							<span class="itemId text">{{ productInfo?.skuId || productInfo._id }}</span>
 							<el-icon class="btnCopy"><CopyDocument @click="() => copyAction('1435312315123252')" /></el-icon>
 						</h2>
 						<!-- 配送 -->

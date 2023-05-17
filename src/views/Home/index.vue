@@ -11,8 +11,11 @@
 				:slides-per-view="1"
 				:space-between="50"
 				:pagination="true"
+				:autoplay="true"
+				:controller="true"
+				:a11y="true"
 				:navigation="true"
-				:modules="[Navigation, Pagination]"
+				:modules="[Navigation, Pagination, Autoplay, Controller, A11y, Manipulation]"
 				@swiper="onSwiper"
 				@slideChange="onSlideChange"
 			>
@@ -26,12 +29,19 @@
 			</swiper>
 		</div>
 		<!-- 热门类目 -->
-		<div class="hotCategory">
-			<HotCategoryItem v-for="item in config?.hotCategory" :key="item?._id" :info="item.itemData"></HotCategoryItem>
+		<div class="mt-7">
+			<h2>热门类目</h2>
+			<div class="hotCategory">
+				<HotCategoryItem v-for="item in config?.hotCategory" :key="item?._id" :info="item.itemData"></HotCategoryItem>
+				<HotCategoryItem v-for="item in config?.hotCategory" :key="item?._id" :info="item.itemData"></HotCategoryItem>
+			</div>
 		</div>
 		<!-- 类目推荐 -->
 		<div class="recommendCategory">
-			<RecomendCategory v-for="item in config.category" :key="item._id" :info="item.itemData"></RecomendCategory>
+			<h2>类目推荐</h2>
+			<div class="mt-7">
+				<RecomendCategory v-for="item in config.category" :key="item._id" :info="item.itemData"></RecomendCategory>
+			</div>
 		</div>
 		<!-- 商品推荐 -->
 		<div class="recommendProduct">
@@ -48,8 +58,8 @@
 </template>
 
 <script setup lang="ts">
-import {reactive, ref, onMounted} from 'vue'
-import {Navigation, Pagination} from 'swiper'
+import {ref, onMounted} from 'vue'
+import {Navigation, Pagination, Autoplay, Controller, A11y, Manipulation} from 'swiper'
 import {getConfig} from '@/api/public'
 import {Swiper, SwiperSlide} from 'swiper/vue'
 import 'swiper/css'
@@ -69,45 +79,6 @@ const onSwiper = (swiper: any) => {
 const onSlideChange = () => {
 	console.log('slide change')
 }
-
-const list = reactive<Array<CategoryType.CategoryItem>>([
-	{
-		id: '1',
-		iconUrl: Img,
-		title: '类目名称',
-		seoUrl: '1',
-	},
-	{
-		id: '2',
-		iconUrl: Img,
-		title: '类目名称',
-		seoUrl: '1',
-	},
-	{
-		id: '3',
-		iconUrl: Img,
-		title: '类目名称',
-		seoUrl: '1',
-	},
-	{
-		id: '4',
-		iconUrl: Img,
-		title: '类目名称',
-		seoUrl: '1',
-	},
-	{
-		id: '5',
-		iconUrl: Img,
-		title: '类目名称',
-		seoUrl: '1',
-	},
-	{
-		id: '6',
-		iconUrl: Img,
-		title: '类目名称',
-		seoUrl: '2',
-	},
-])
 
 onMounted(() => {
 	getConfig().then(doc => {
@@ -136,53 +107,55 @@ onMounted(() => {
 	}
 }
 .hotCategory {
-	height: 350px;
+	height: 250px;
 	margin-top: 30px;
 	display: flex;
+	flex-wrap: wrap;
 }
 .recommendCategory {
 	margin-top: 30px;
 }
 .recommendProduct {
 	margin: 40px 0;
-	h2 {
-		font: 20px Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB, '\5B8B\4F53', sans-serif;
-		color: #333;
-		font-weight: 900;
-		position: relative;
-		height: 40px;
-		line-height: 40px;
-		width: 250px;
-		margin: 0 auto;
-		&::after {
-			content: '';
-			position: absolute;
-			top: 50%;
-			transform: translate(0, -50%);
-			background-image: url('../../assets/img/icon.png');
-			display: block;
-			width: 50px;
-			height: 20px;
-			right: 0px;
-			background-size: contain;
-			background-repeat: no-repeat;
-		}
-		&::before {
-			content: '';
-			position: absolute;
-			top: 50%;
-			transform: translate(0, -50%);
-			background-image: url('../../assets/img/icon.png');
-			display: block;
-			width: 50px;
-			height: 20px;
-			background-size: contain;
-			background-repeat: no-repeat;
-			left: 0px;
-		}
-	}
+
 	.productList {
 		margin-top: 30px;
+	}
+}
+h2 {
+	font: 20px Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB, '\5B8B\4F53', sans-serif;
+	color: #333;
+	font-weight: 900;
+	position: relative;
+	height: 40px;
+	line-height: 40px;
+	width: 250px;
+	margin: 0 auto;
+	&::after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		transform: translate(0, -50%);
+		background-image: url('../../assets/img/icon.png');
+		display: block;
+		width: 50px;
+		height: 20px;
+		right: 0px;
+		background-size: contain;
+		background-repeat: no-repeat;
+	}
+	&::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		transform: translate(0, -50%);
+		background-image: url('../../assets/img/icon.png');
+		display: block;
+		width: 50px;
+		height: 20px;
+		background-size: contain;
+		background-repeat: no-repeat;
+		left: 0px;
 	}
 }
 </style>

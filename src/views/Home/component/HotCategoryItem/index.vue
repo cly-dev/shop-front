@@ -6,7 +6,7 @@
 <template>
 	<div class="categoryItem" :style="{backgroundImage: `url(${info.iconUrl})`, backgroundSize: '100% 100%'}">
 		<h2>{{ info.categoryTitle }}</h2>
-		<button class="btnLink" @click="toLink">跳转</button>
+		<button class="btnLink" @click="toLink">查看更多</button>
 	</div>
 </template>
 
@@ -39,23 +39,25 @@ const toLink = () => {
 	}
 	h2 {
 		text-align: left;
-		margin-left: 20px;
-		margin-top: 20px;
+		margin-left: 10px;
+		margin-top: 10px;
 		font-family: $SS;
+		font-weight: 900;
 	}
 }
 .btnLink {
 	position: absolute;
 	border: none;
-	width: 90px;
-	font-size: 20px;
+	width: 70px;
+	font-size: 13px;
 	bottom: 10%;
 	right: 10%;
-	height: 40px;
+	height: 30px;
 	border-radius: 10px;
 	z-index: 66;
 	color: white;
 	font-size: $SS;
+	padding: 0 5px;
 	transition: all ease 0.3s;
 	cursor: pointer;
 	background: transparent linear-gradient(289deg, #f78b78 0%, #f54c2b 15%, #e23c4a 100%) 0% 0% no-repeat padding-box;
